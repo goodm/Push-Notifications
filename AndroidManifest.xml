@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lukasz.push"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:name="com.lukasz.push.MyApplication" 
+        android:label="@string/app_name" >
+        
+
+        
+        
+        <activity
+            android:name=".Main"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="com.lukasz.push.PushPreferencesActivity" />
+        
+         <!-- REQUIRED -->
+        <receiver android:name="com.urbanairship.CoreReceiver">
+            <!-- REQUIRED IntentFilter - For Helium and Hybrid -->
+            <intent-filter>
+              <action android:name="android.intent.action.BOOT_COMPLETED" />
+              <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
+
+        <!-- REQUIRED for C2DM and Hybrid -->
+        <receiver android:name="com.urbanairship.push.c2dm.C2DMPushReceiver"
+                android:permission="com.google.android.c2dm.permission.SEND">
+          <!-- Receive the actual message -->
+          <intent-filter>
+              <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+              <category android:name="com.lukasz.push" />
+          </intent-filter>
+          <!-- Receive the registration id -->
+          <intent-filter>
+              <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+              <category android:name="com.lukasz.push" />
+          </intent-filter>
+        </receiver>
+
+        <!-- REQUIRED -->
+        <!-- The 'android:process' parameter is optional. Set it to a value starting
+            with a colon (:) to make it run in a separate,
+            private process -->
+        <service android:name="com.urbanairship.push.PushService"
+                android:process=":com.urbanairship.push.process"/>
+
+        <!-- OPTIONAL, if you want to receive push, push opened and registration completed intents -->
+        <receiver android:name="com.lukasz.push.IntentReceiver" />
+
+
+    </application>
+    
+        <uses-permission android:name="android.permission.INTERNET"/>
+	    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	    <uses-permission android:name="android.permission.VIBRATE"/>
+	    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	    <permission android:name="com.lukasz.push.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	    <uses-permission android:name="com.lukasz.push.permission.C2D_MESSAGE" />
+
+</manifest>
